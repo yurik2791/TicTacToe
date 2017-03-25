@@ -28,3 +28,13 @@ D:\C#\TTT\TTT\obj\Debug\TTT.Form1.resources
 D:\C#\TTT\TTT\obj\Debug\TTT.Form2.resources
 D:\C#\TTT\TTT\obj\Debug\TTT.Properties.Resources.resources
 D:\C#\TTT\TTT\obj\Debug\TTT.csproj.GenerateResource.Cache
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\bin\Debug\TTT.exe.config
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\obj\Debug\TTT.exe
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\obj\Debug\TTT.pdb
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\bin\Debug\TTT.exe
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\bin\Debug\TTT.pdb
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\obj\Debug\TTT.csprojResolveAssemblyReference.cache
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\obj\Debug\TTT.Form1.resources
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\obj\Debug\TTT.Form2.resources
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\obj\Debug\TTT.Properties.Resources.resources
+C:\Users\campus\Documents\Visual Studio 2015\Projects\TTT\TTT\obj\Debug\TTT.csproj.GenerateResource.Cache
