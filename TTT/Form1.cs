@@ -12,8 +12,8 @@ namespace TTT
 {
 	public partial class Form1 : Form
 	{
-		public string PlayerXName = @"Stepan";
-		public string Player0Name = @"Guest";
+		public string PlayerXName = @"Iurie";
+		public string Player0Name = @"Stepan";
 		public int[] GameData = new int[9];
 		private List<Control> _list = new List<Control>();
 
@@ -43,6 +43,18 @@ namespace TTT
 					var index = Convert.ToInt32(receivedData);
 					var control = _list.Single(t => t.Name.Contains(index.ToString()));
 					control.BeginInvoke((MethodInvoker)delegate { control.Text = @"0"; });
+					GameData[index - 1] = 4;
+					if (Gamecheck() == 1)
+					{
+						MessageBox.Show(PlayerXName + @" win!");
+						BeginInvoke((MethodInvoker)ResetGame);
+					}
+					else if (Gamecheck() == 2)
+					{
+						MessageBox.Show(Player0Name + @" win!");
+						BeginInvoke((MethodInvoker)ResetGame);
+					}
+
 					BeginInvoke((MethodInvoker)unblock);
 				}
 			}
@@ -99,6 +111,8 @@ namespace TTT
 			{
 				GameData[i] = 0;
 			}
+			BeginInvoke((MethodInvoker)unblock);
+
 		}
 
 		private void block()
