@@ -1,26 +1,54 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace TTT
 {
-
     public partial class Form1 : Form
     {
-        public string PlayerXName= @"Iura";
-        public string Player0Name=@"Stepan";
+        public string PlayerXName = @"Stepan";
+        public string Player0Name = @"Guest";
         public int[] GameData = new int[9];
+        private List<Control> _list = new List<Control>();
 
         public Form1()
         {
             InitializeComponent();
+
+            foreach (Control control in Controls)
+            {
+                if (control.GetType() == typeof(Button))
+                    _list.Add(control);
+            }
+
+            new Thread(UpdateBoard).Start();
         }
 
-	    private void  updateBoard()
-	    {
-		    var socket= new Socket(AddressFamily.InterNetwork, SocketType.Dgram, s);
-	    }
+        private void UpdateBoard()
+        {
+            UdpClient listener = new UdpClient(4444);
+            IPEndPoint groupEp = new IPEndPoint(IPAddress.Any, 4444);
+            try
+            {
+                while (true)
+                {
+                    var receiveByteArray = listener.Receive(ref groupEp);
+                    var receivedData = Encoding.ASCII.GetString(receiveByteArray, 0, receiveByteArray.Length);
+                    var index = Convert.ToInt32(receivedData);
+                    var control = _list.Single(t => t.Name.Contains(index.ToString()));
+                    control.BeginInvoke((MethodInvoker)delegate { control.Text = @"0"; });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
 
         private int Gamecheck()
         {
@@ -51,8 +79,7 @@ namespace TTT
 
         public void ResetGame()
         {
-            if (MessageBox.Show(@"Another game?", @"Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                DialogResult.No)
+            if (MessageBox.Show(@"Another game?", @"Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
             {
                 Close();
             }
@@ -66,7 +93,7 @@ namespace TTT
             btn8.Text = @"";
             btn9.Text = @"";
             CurrPlName.Text = @"Current player: " + PlayerXName;
-            for (int i = 0; i < GameData.Length; i++)
+            for (var i = 0; i < GameData.Length; i++)
             {
                 GameData[i] = 0;
             }
@@ -74,6 +101,9 @@ namespace TTT
 
         private void btn_Click(object sender, EventArgs e)
         {
+            var sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            sock.Connect(tbIP.Text.Split(':')[0], Convert.ToInt32(tbIP.Text.Split(':')[1]));
+
             Button currBtn = sender as Button;
             if (currBtn != null && currBtn.Text.Length == 0)
             {
@@ -83,7 +113,8 @@ namespace TTT
                     int currBtnNr;
                     int.TryParse(currBtn.Name.Substring(3, 1), out currBtnNr);
                     GameData[currBtnNr - 1] = 1;
-                    CurrPlName.Text = @"Current player: " + Player0Name;
+                    //CurrPlName.Text = @"Current player: " + Player0Name;
+                    sock.Send(Encoding.ASCII.GetBytes(currBtnNr.ToString()));
                     if (Gamecheck() == 1)
                     {
                         MessageBox.Show(PlayerXName + @" win!");
@@ -96,13 +127,12 @@ namespace TTT
                     int currBtnNr;
                     int.TryParse(currBtn.Name.Substring(3, 1), out currBtnNr);
                     GameData[currBtnNr - 1] = 4;
-                    CurrPlName.Text = @"Current player: " + PlayerXName;
+                    //CurrPlName.Text = @"Current player: " + PlayerXName;
                     if (Gamecheck() == 2)
                     {
                         MessageBox.Show(Player0Name + @" win!");
                         ResetGame();
                     }
-
                 }
             }
         }
